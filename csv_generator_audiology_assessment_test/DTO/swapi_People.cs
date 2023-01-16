@@ -16,6 +16,7 @@ namespace csv_generator_audiology_assessment_test.DTO
         public string homeworldName { get; set; }
         public List<string> films { get; set; }
         public List<int> filmIds { get; set; }
+        public string episodes_present { get; set; }
         public List<string> species { get; set; }
         public List<string> vehicles { get; set; }
         public List<string> starships { get; set; }

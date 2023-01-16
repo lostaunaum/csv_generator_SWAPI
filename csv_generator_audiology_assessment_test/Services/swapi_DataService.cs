@@ -52,7 +52,7 @@ namespace csv_generator_audiology_assessment_test.Services
                 .ThenBy(x => x.birth_year)
                 .ThenBy(x => x.name).ToList();
 
-            csvResult = await CreateCSV(sorted);
+            csvResult = CreateCSV(sorted);
 
             return csvResult;
         }
@@ -76,6 +76,7 @@ namespace csv_generator_audiology_assessment_test.Services
                 if (listOfPeople.Where(x => x.name == data.name).FirstOrDefault() == null)
                 {
                     data.filmIds = new List<int>() { filmId };
+                    data.episodes_present += filmId.ToString();
                     listOfPeople.Add(data);
                 }
                 //If its already in the list make sure to add the Film ID
@@ -86,6 +87,7 @@ namespace csv_generator_audiology_assessment_test.Services
                     if (!people.filmIds.Contains(filmId))
                     {
                         people.filmIds.Add(filmId);
+                        people.episodes_present += string.Format(", {0}", filmId);
                     }
                 }
             }
@@ -93,12 +95,13 @@ namespace csv_generator_audiology_assessment_test.Services
             return listOfPeople;
         }
 
-        private async Task<string> CreateCSV(List<swapi_People> sortedListOfPeople)
+        private string CreateCSV(List<swapi_People> sortedListOfPeople)
         {
             var csv = string.Empty;
             var delimiter = ";";
 
-            var properties = typeof(swapi_People).GetProperties().Where(n => n.PropertyType == typeof(string));
+            var properties = typeof(swapi_People).GetProperties().Where(
+                n => n.PropertyType == typeof(string));
 
             using (var sw = new StringWriter())
             {
