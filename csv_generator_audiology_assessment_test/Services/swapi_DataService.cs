@@ -71,6 +71,7 @@ namespace csv_generator_audiology_assessment_test.Services
                 var contentHomeWorld = await httpResponseHomeWorld.Content.ReadAsStringAsync();
                 var dataHomeWorld = JsonConvert.DeserializeObject<swapi_Planet>(contentHomeWorld);
                 data.homeworldName = dataHomeWorld.name;
+                data.name = string.Join(" ", data.name.Split(' ').ToArray().Reverse());
 
                 //If the character is not in the list add id
                 if (listOfPeople.Where(x => x.name == data.name).FirstOrDefault() == null)
